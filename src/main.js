@@ -13,7 +13,7 @@ app.innerHTML = `
   <header class="topbar">
     <div class="shop-container nav-wrap">
       <a class="brand brand-home" href="#home" aria-label="Shop hoa HẬU — Trang chủ">
-        <img class="brand-logo" src="/brand/logo-shop-hoa-hau.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" />
+        <img class="brand-logo" src="/brand/logo-shop-hoa-hau.svg?v=floral-3" width="600" height="300" alt="SHOP HOA HẬU" />
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
@@ -39,7 +39,7 @@ app.innerHTML = `
       <div class="shop-container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow">HOA SỈ HỒ THỊ KỶ · MỞ CỬA 24/24</span>
-          <h1 class="hero-brand-title"><img class="hero-floral-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" /><span class="hero-brand-specialty">Chuyên sỉ lay ơn & hướng dương</span></h1>
+          <h1 class="hero-brand-title"><img class="hero-floral-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-3" width="600" height="300" alt="SHOP HOA HẬU" /><span class="hero-brand-specialty">Chuyên sỉ lay ơn & hướng dương</span></h1>
           <span class="hero-brand-motto">Từ vườn Đà Lạt, về với HẬU.</span>
           <p>
             Hoa nhập từ vườn Đà Lạt. HẬU chuyên cung cấp sỉ lay ơn các màu và hướng dương cho thương lái, cửa hàng hoa và đối tác kinh doanh.
@@ -337,7 +337,7 @@ app.innerHTML = `
     <div class="shop-container footer-grid">
       <div>
         <div class="brand footer-brand">
-          <img class="brand-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" loading="lazy" />
+          <img class="brand-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-3" width="600" height="300" alt="SHOP HOA HẬU" loading="lazy" />
         </div>
         <p>Hoa từ vườn Đà Lạt. Chuyên sỉ lay ơn các màu và hướng dương tại Hồ Thị Kỷ, TP.HCM. Mở cửa 24/24.</p>
       </div>
