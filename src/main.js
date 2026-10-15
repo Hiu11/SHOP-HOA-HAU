@@ -13,8 +13,7 @@ app.innerHTML = `
   <header class="topbar">
     <div class="shop-container nav-wrap">
       <a class="brand brand-home" href="#home" aria-label="Shop hoa HẬU — Trang chủ">
-        <span class="brand-mark">${icon(Flower2)}</span>
-        <span class="brand-wordmark"><span class="brand-kicker">SHOP HOA</span><strong class="brand-name">HẬU</strong></span>
+        <img class="brand-logo" src="/brand/logo-shop-hoa-hau.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" />
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
@@ -40,10 +39,10 @@ app.innerHTML = `
       <div class="shop-container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow">HOA SỈ HỒ THỊ KỶ · MỞ CỬA 24/24</span>
-          <h1 class="hero-brand-title"><span class="hero-shop-kicker">SHOP HOA</span><span class="hero-script hero-name">HẬU</span><span class="hero-brand-specialty">Chuyên sỉ lay ơn & hướng dương</span></h1>
-          <span class="hero-brand-motto">Muôn màu hoa. Một chữ tín.</span>
+          <h1 class="hero-brand-title"><img class="hero-floral-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" /><span class="hero-brand-specialty">Chuyên sỉ lay ơn & hướng dương</span></h1>
+          <span class="hero-brand-motto">Từ vườn Đà Lạt, về với HẬU.</span>
           <p>
-            Chuyên cung cấp sỉ hoa lay ơn các màu và hoa hướng dương cho thương lái, cửa hàng hoa và đối tác kinh doanh.
+            Hoa nhập từ vườn Đà Lạt. HẬU chuyên cung cấp sỉ lay ơn các màu và hướng dương cho thương lái, cửa hàng hoa và đối tác kinh doanh.
             Shop mở cửa 24/24 tại Hồ Thị Kỷ. Liên hệ Zalo 0798 971 155 để chọn hoa và nhận báo giá.
           </p>
 
@@ -89,7 +88,7 @@ app.innerHTML = `
         <div>${icon(Flower2)} Lay ơn các màu</div>
         <div>${icon(Flower2)} Có hoa hướng dương</div>
         <div>${icon(BadgeDollarSign)} Giá sỉ cạnh tranh</div>
-        <div>${icon(Handshake)} Hợp tác lâu dài</div>
+        <div>${icon(Truck)} Hoa từ vườn Đà Lạt</div>
       </div>
     </section>
 
@@ -100,13 +99,13 @@ app.innerHTML = `
           <span class="section-tag">VỀ CHÚNG TÔI</span>
           <h2>HẬU — hoa sỉ tại Hồ Thị Kỷ, mở cửa 24/24</h2>
           <p>
-            Shop hoa HẬU chuyên cung cấp sỉ hoa lay ơn các màu và hoa hướng dương, phục vụ nhu cầu lấy hoa của thương lái và cửa hàng hoa suốt 24/24.
+            Hoa tại HẬU được nhập từ vườn Đà Lạt. Shop chuyên cung cấp sỉ lay ơn các màu và hướng dương, phục vụ nhu cầu lấy hoa của thương lái và cửa hàng hoa suốt 24/24.
             Bạn có thể tìm shop đối diện Hoa tươi MƯỜI, nằm giữa số nhà 80/12 và 80/11 Hồ Thị Kỷ, phường Vườn Lài, TP.HCM.
           </p>
           <ul class="feature-list">
             <li>${icon(Check)} Hoa lay ơn nhiều màu và hướng dương vàng rực rỡ.</li>
             <li>${icon(Check)} Hàng về từ 23h đến rạng sáng — nhiều hoa để lựa chọn.</li>
-            <li>${icon(Check)} Chủ động nhập và phân loại hoa tươi theo tiêu chuẩn bán sỉ.</li>
+            <li>${icon(Check)} Hoa nhập từ vườn Đà Lạt, được phân loại khi về shop.</li>
             <li>${icon(Check)} Liên hệ Zalo 0798 971 155 để trao đổi và nhận báo giá sỉ.</li>
           </ul>
         </div>
@@ -338,10 +337,9 @@ app.innerHTML = `
     <div class="shop-container footer-grid">
       <div>
         <div class="brand footer-brand">
-          <span class="brand-mark">${icon(Flower2)}</span>
-          <span class="brand-wordmark"><span class="brand-kicker">SHOP HOA</span><strong class="brand-name">HẬU</strong></span>
+          <img class="brand-logo" src="/brand/logo-shop-hoa-hau-light.svg?v=floral-2" width="600" height="300" alt="SHOP HOA HẬU" loading="lazy" />
         </div>
-        <p>Chuyên sỉ hoa lay ơn các màu và hướng dương tại Hồ Thị Kỷ, TP.HCM. Mở cửa 24/24.</p>
+        <p>Hoa từ vườn Đà Lạt. Chuyên sỉ lay ơn các màu và hướng dương tại Hồ Thị Kỷ, TP.HCM. Mở cửa 24/24.</p>
       </div>
       <div>
         <h4>Trang chủ</h4>
