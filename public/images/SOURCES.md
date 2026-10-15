@@ -3,6 +3,7 @@
 Ảnh minh họa, không phải ảnh hàng thực tế của Shop hoa HẬU. Tải từ Pexels theo giấy phép Pexels: https://www.pexels.com/license/
 
 - `lay-on-hong.jpg`: Close-up of Pink Gladiolus — https://www.pexels.com/photo/close-up-of-pink-gladiolus-17745160/
+- `share-shop-hoa-hau-v1.jpg`: Bản sao ảnh `lay-on-hong.jpg` dùng làm ảnh xem trước khi chia sẻ link trên Zalo và mạng xã hội, không chỉnh sửa ảnh.
 - `lay-on-do-tim.jpg`: Vibrant Gladiolus Flowers in Bloom — https://www.pexels.com/photo/vibrant-gladiolus-flowers-in-bloom-37183846/
 - `lay-on-tim.jpg`: Beautiful Purple Gladiolus Flowers in Bloom — https://www.pexels.com/photo/beautiful-purple-gladiolus-flowers-in-bloom-35502961/
 
