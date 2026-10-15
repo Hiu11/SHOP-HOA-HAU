@@ -344,7 +344,7 @@ app.innerHTML = `
 
           <button type="submit" class="btn btn-primary full-width">GỬI YÊU CẦU</button>
           <p id="formMessage" class="form-message" aria-live="polite"></p>
-          <p class="form-intro">Bản chạy thử: yêu cầu được lưu trên máy chủ của dự án; chưa có nhân viên trực hay thông báo tự động.</p>
+          <p class="form-intro">Yêu cầu được lưu để đối chiếu. Để nhận tư vấn trực tiếp, vui lòng liên hệ Zalo 0798 971 155. Gửi form chưa phải xác nhận đơn hàng.</p>
         </form>
       </div>
     </section>

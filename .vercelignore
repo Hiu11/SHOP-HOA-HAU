@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+data
+.env*
+src/assets
+public/images/huong-duong.jpg
+public/images/huong-duong-moi.jpg
+public/images/lay-on-do-tim.jpg
+public/images/lay-on-vang.jpg

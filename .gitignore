@@ -16,6 +16,7 @@ data/
 !.env.example
 .aws/
 .codex/
+.vercel/
 *.local
 
 # Editor directories and files
@@ -28,3 +29,6 @@ data/
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*

@@ -37,4 +37,12 @@ Bản build chạy tại http://localhost:3001, phục vụ cả trang và API. 
 
 Yêu cầu được lưu nối tiếp trong `data/quotes.jsonl`. Chủ dự án có thể đọc tệp này trên máy chủ; không có API công khai đọc dữ liệu khách hàng. Thư mục data được bỏ qua khi quản lý mã nguồn. Giữ và sao lưu thư mục này khi cập nhật bản build. Hiện chưa có trang quản trị, gửi email/Zalo tự động, thanh toán hay xác nhận đơn hàng.
 
+## Triển khai Vercel
+
+`vercel.json` cấu hình Vite build vào `dist`. Route `api/quotes.js` chạy bằng Vercel Function, dùng cùng quy tắc kiểm tra dữ liệu với bản local. Trên Vercel, mỗi yêu cầu được lưu thành một JSON trong Vercel Blob **private**, không dùng ổ đĩa tạm của Function. Chỉ trả mã yêu cầu sau khi lưu thành công; khi kho lưu trữ lỗi, form giữ thông tin và gợi ý liên hệ Zalo.
+
+Kho `shop-hoa-hau-quotes` được nối với project `shop-hoa-hau` cho production và preview. Cần biến môi trường `BLOB_READ_WRITE_TOKEN` do kết nối kho cung cấp. Không đưa token, `.env*`, `.vercel` hoặc dữ liệu khách hàng vào Git. Đọc các yêu cầu từ mục Storage trong dashboard Vercel; chưa có trang quản trị riêng.
+
+Repo GitHub `Hiu11/SHOP-HOA-HAU` được nối với project Vercel. Các lần đẩy lên `main` sẽ tạo bản production mới. Kiểm tra bằng `npm test` và `npm run build` trước khi đẩy.
+
 Hiện chạy cục bộ, chưa triển khai lên Internet. Hotline, tên shop, giờ mở cửa và địa chỉ do chủ dự án cung cấp. Giá và tình trạng màu hoa cần liên hệ shop xác nhận. Ảnh minh họa từ Pexels và Wikimedia Commons được lưu trong dự án, không phải ảnh hàng thực tế. Khi triển khai cần môi trường Node với ổ đĩa lưu trữ bền vững và cấu hình HTTPS/proxy phù hợp.
