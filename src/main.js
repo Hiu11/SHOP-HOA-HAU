@@ -1,7 +1,7 @@
-﻿import './style.css'
+﻿import './layout.css'
 import { initEffects } from './effects.js'
-import './wholesale.css'
-import './responsive.css'
+
+
 import { createElement, Flower2, Truck, BadgeDollarSign, Handshake, Package, Phone, CircleCheck, Check, Menu, X, ArrowUp, ArrowUpRight, Clock3, MessageCircle } from 'lucide'
 const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', focusable: 'false', class: 'icon' }).outerHTML
 
@@ -11,7 +11,7 @@ const app = document.querySelector('#app')
 
 app.innerHTML = `
   <header class="topbar">
-    <div class="container nav-wrap">
+    <div class="shop-container nav-wrap">
       <div class="brand" aria-label="Shop hoa HẬU">
         <span class="brand-mark">${icon(Flower2)}</span>
         <div>
@@ -40,7 +40,7 @@ app.innerHTML = `
   <main>
     <section class="hero" id="home">
       <div class="hero-overlay"></div>
-      <div class="container hero-grid">
+      <div class="shop-container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow">SHOP HOA HẬU · MỞ CỬA 24/24</span>
           <h1><span class="hero-script">Hoa lay ơn</span><span class="hero-colors">Muôn màu khoe sắc</span><span class="hero-signature">Nguồn sỉ từ <strong>HẬU.</strong></span></h1>
@@ -87,7 +87,7 @@ app.innerHTML = `
     </section>
 
     <section class="trust-bar">
-      <div class="container trust-grid">
+      <div class="shop-container trust-grid">
         <div>${icon(Flower2)} Lay ơn các màu</div>
         <div>${icon(Flower2)} Có hoa hướng dương</div>
         <div>${icon(BadgeDollarSign)} Giá sỉ cạnh tranh</div>
@@ -96,7 +96,7 @@ app.innerHTML = `
     </section>
 
     <section class="section" id="about">
-      <div class="container about-grid">
+      <div class="shop-container about-grid">
         <div class="about-photo" role="img" aria-label="Những bông lay ơn tím tươi đang nở rộ"></div>
         <div class="about-copy">
           <span class="section-tag">VỀ CHÚNG TÔI</span>
@@ -116,7 +116,7 @@ app.innerHTML = `
     </section>
 
     <section class="section section-soft" id="catalog">
-      <div class="container">
+      <div class="shop-container">
         <div class="section-head">
           <div>
             <span class="section-tag">DANH MỤC HOA</span>
@@ -153,7 +153,7 @@ app.innerHTML = `
     </section>
 
     <section class="section wholesale-section" id="pricing" aria-labelledby="wholesale-title">
-      <div class="container">
+      <div class="shop-container">
         <div class="wholesale-panel">
           <div class="wholesale-photo">
             <img src="/images/lay-on-hong.jpg" alt="Cánh hoa lay ơn hồng tươi với những giọt sương" loading="lazy" width="1200" height="801">
@@ -176,7 +176,7 @@ app.innerHTML = `
     </section>
 
     <section class="section section-soft" id="why-us">
-      <div class="container">
+      <div class="shop-container">
         <div class="section-head center">
           <div>
             <span class="section-tag">LỢI THẾ CẠNH TRANH</span>
@@ -220,7 +220,7 @@ app.innerHTML = `
     </section>
 
     <section class="section" id="gallery">
-      <div class="container">
+      <div class="shop-container">
         <div class="section-head center">
           <div>
             <span class="section-tag">THƯ VIỆN HÌNH ẢNH</span>
@@ -238,7 +238,7 @@ app.innerHTML = `
     </section>
 
     <section class="section section-soft" id="process">
-      <div class="container">
+      <div class="shop-container">
         <div class="section-head center">
           <div>
             <span class="section-tag">QUY TRÌNH ĐẶT HÀNG</span>
@@ -272,7 +272,7 @@ app.innerHTML = `
     </section>
 
     <section class="section" id="contact">
-      <div class="container contact-grid">
+      <div class="shop-container contact-grid">
         <div class="contact-info">
           <span class="section-tag">LIÊN HỆ</span>
           <h2>Nhận báo giá sỉ ngay hôm nay</h2>
@@ -337,7 +337,7 @@ app.innerHTML = `
   </main>
 
   <footer class="footer">
-    <div class="container footer-grid">
+    <div class="shop-container footer-grid">
       <div>
         <div class="brand footer-brand">
           <span class="brand-mark">${icon(Flower2)}</span>
@@ -468,5 +468,6 @@ document.querySelector('.top').addEventListener('click', () => {
 })
 
 initEffects()
+
 
 
