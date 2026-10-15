@@ -12,13 +12,10 @@ const app = document.querySelector('#app')
 app.innerHTML = `
   <header class="topbar">
     <div class="shop-container nav-wrap">
-      <div class="brand" aria-label="Shop hoa HẬU">
+      <a class="brand brand-home" href="#home" aria-label="Shop hoa HẬU — Trang chủ">
         <span class="brand-mark">${icon(Flower2)}</span>
-        <div>
-          <strong>SHOP HOA HẬU</strong>
-          <small>Lay ơn & hướng dương · 24/24</small>
-        </div>
-      </div>
+        <span class="brand-wordmark"><span class="brand-kicker">SHOP HOA</span><strong class="brand-name">HẬU</strong></span>
+      </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
         <a href="#home">Trang chủ</a>
@@ -42,8 +39,9 @@ app.innerHTML = `
       <div class="hero-overlay"></div>
       <div class="shop-container hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">SHOP HOA HẬU · MỞ CỬA 24/24</span>
-          <h1><span class="hero-script">Hoa lay ơn</span><span class="hero-colors">Muôn màu khoe sắc</span><span class="hero-signature">Nguồn sỉ từ <strong>HẬU.</strong></span></h1>
+          <span class="eyebrow">HOA SỈ HỒ THỊ KỶ · MỞ CỬA 24/24</span>
+          <h1 class="hero-brand-title"><span class="hero-shop-kicker">SHOP HOA</span><span class="hero-script hero-name">HẬU</span><span class="hero-brand-specialty">Chuyên sỉ lay ơn & hướng dương</span></h1>
+          <span class="hero-brand-motto">Muôn màu hoa. Một chữ tín.</span>
           <p>
             Chuyên cung cấp sỉ hoa lay ơn các màu và hoa hướng dương cho thương lái, cửa hàng hoa và đối tác kinh doanh.
             Shop mở cửa 24/24 tại Hồ Thị Kỷ. Liên hệ Zalo 0798 971 155 để chọn hoa và nhận báo giá.
@@ -341,10 +339,7 @@ app.innerHTML = `
       <div>
         <div class="brand footer-brand">
           <span class="brand-mark">${icon(Flower2)}</span>
-          <div>
-            <strong>SHOP HOA HẬU</strong>
-            <small>Lay ơn & hướng dương · 24/24</small>
-          </div>
+          <span class="brand-wordmark"><span class="brand-kicker">SHOP HOA</span><strong class="brand-name">HẬU</strong></span>
         </div>
         <p>Chuyên sỉ hoa lay ơn các màu và hướng dương tại Hồ Thị Kỷ, TP.HCM. Mở cửa 24/24.</p>
       </div>

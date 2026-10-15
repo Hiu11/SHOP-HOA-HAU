@@ -5,6 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "brand": "node scripts/generate-brand.mjs",
     "dev": "node server/dev.js",
     "start": "node server/index.js",
     "test": "node --test",
@@ -12,6 +13,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "vite": "^8.3.0"
   },
   "dependencies": {
