@@ -8,7 +8,7 @@ export function initEffects() {
   }
 
   // Keep content visible even when animations or observers are unavailable.
-  const revealTargets = document.querySelectorAll('.section-head, .about-photo, .about-copy, .product-card, .pricing-card, .benefit-card, .gallery-item, .timeline-step, .contact-info, .quote-form')
+  const revealTargets = document.querySelectorAll('.section-head, .about-photo, .about-copy, .product-card, .wholesale-panel, .benefit-card, .gallery-item, .timeline-step, .contact-info, .quote-form')
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return

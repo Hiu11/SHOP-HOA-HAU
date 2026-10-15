@@ -1,6 +1,7 @@
 ﻿import './style.css'
 import { initEffects } from './effects.js'
-import { createElement, Flower2, Truck, BadgeDollarSign, Handshake, Package, Phone, CircleCheck, Check, Menu, X, ArrowUp, MessageCircle } from 'lucide'
+import './wholesale.css'
+import { createElement, Flower2, Truck, BadgeDollarSign, Handshake, Package, Phone, CircleCheck, Check, Menu, X, ArrowUp, ArrowUpRight, Clock3, MessageCircle } from 'lucide'
 const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', focusable: 'false', class: 'icon' }).outerHTML
 
 import { products, flowerNames } from '../shared/catalog.js'
@@ -150,42 +151,26 @@ app.innerHTML = `
       </div>
     </section>
 
-    <section class="section" id="pricing">
+    <section class="section wholesale-section" id="pricing" aria-labelledby="wholesale-title">
       <div class="container">
-        <div class="section-head center">
-          <div>
-            <span class="section-tag">GIÁ SỈ</span>
-            <h2>Giá tốt – liên hệ để nhận báo giá hôm nay</h2>
+        <div class="wholesale-panel">
+          <div class="wholesale-photo">
+            <img src="/images/lay-on-hong.jpg" alt="Cánh hoa lay ơn hồng tươi với những giọt sương" loading="lazy" width="1200" height="801">
+            <div class="wholesale-photo-caption"><span>HỒ THỊ KỶ · TP.HCM</span><strong>Hoa đẹp cho<br>mỗi ngày buôn bán.</strong></div>
+          </div>
+          <div class="wholesale-content">
+            <span class="wholesale-eyebrow">ĐỒNG HÀNH CÙNG KHÁCH SỈ</span>
+            <h2 id="wholesale-title">Chọn hoa bạn thích.<br><em>Để HẬU gửi giá sỉ.</em></h2>
+            <p class="wholesale-description">Nhắn loại hoa, màu sắc và số lượng cần lấy. HẬU sẽ báo giá theo hàng thực tế trong ngày.</p>
+            <div class="wholesale-varieties"><span>${icon(Flower2)} Lay ơn các màu</span><span>${icon(Flower2)} Hướng dương</span></div>
+            <a class="btn wholesale-button" href="https://zalo.me/0798971155" target="_blank" rel="noreferrer">${icon(MessageCircle)} Nhận báo giá qua Zalo ${icon(ArrowUpRight)}</a>
+            <div class="wholesale-details">
+              <span>${icon(Clock3)} Mở cửa 24/24</span>
+              <span>${icon(Truck)} Hàng về 23h – rạng sáng</span>
+            </div>
+            <p class="wholesale-footnote">Giá tùy thời điểm và số lượng · Zalo 0798 971 155</p>
           </div>
         </div>
-
-        <div class="pricing-grid">
-          <div class="pricing-card">
-            <h3>Lay ơn đỏ</h3>
-            <p>Bó</p>
-            <strong>Liên hệ báo giá</strong>
-          </div>
-          <div class="pricing-card">
-            <h3>Lay ơn hồng</h3>
-            <p>Bó</p>
-            <strong>Liên hệ báo giá</strong>
-          </div>
-          <div class="pricing-card">
-            <h3>Lay ơn trắng</h3>
-            <p>Bó</p>
-            <strong>Liên hệ báo giá</strong>
-          </div>
-          <div class="pricing-card">
-            <h3>Hướng dương</h3>
-            <p>Bó</p>
-            <strong>Liên hệ báo giá</strong>
-          </div>
-        </div>
-
-        <div class="pricing-note">
-          Giá sỉ và màu hoa được xác nhận khi liên hệ, tùy thời điểm và số lượng đặt. Gọi 0798 971 155 để nhận báo giá từ Shop hoa HẬU.
-        </div>
-        <div class="pricing-cta"><a class="btn btn-primary" href="https://zalo.me/0798971155" target="_blank" rel="noreferrer">${icon(MessageCircle)} ZALO HẬU · 0798 971 155</a></div>
       </div>
     </section>
 
