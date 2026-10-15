@@ -1,6 +1,7 @@
 ﻿import './style.css'
 import { initEffects } from './effects.js'
 import './wholesale.css'
+import './responsive.css'
 import { createElement, Flower2, Truck, BadgeDollarSign, Handshake, Package, Phone, CircleCheck, Check, Menu, X, ArrowUp, ArrowUpRight, Clock3, MessageCircle } from 'lucide'
 const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', focusable: 'false', class: 'icon' }).outerHTML
 
