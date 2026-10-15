@@ -2,9 +2,9 @@
 @font-face{font-family:Lora;src:url('/fonts/lora-italic.ttf') format('truetype');font-style:italic;font-weight:400 700;font-display:swap}
 :root{--bg:#f9f5f0;--surface:#fff;--surface-soft:#f6efe9;--text:#1f1b1a;--muted:#5e5754;--primary:#2d4a3b;--primary-dark:#1d3329;--accent:#c48d81;--border:#241d1914;--shadow:0 16px 40px #16110f1a;--gutter:clamp(24px,5vw,64px);--gap:24px}
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-bottom:96px}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 'Segoe UI',Tahoma,sans-serif}
-#app{isolation:isolate;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-bottom:96px;overflow-x:clip}
+body{width:100%;max-width:100%;margin:0;overflow-x:clip;background:var(--bg);color:var(--text);font:16px/1.65 'Segoe UI',Tahoma,sans-serif}
+#app{display:block;isolation:isolate;min-width:0;width:100%;max-width:100%}
 #app main,#app section{min-width:0}
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit}
