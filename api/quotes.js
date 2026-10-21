@@ -35,7 +35,10 @@ export function createQuoteHandler({ saveQuote = saveToBlob, sendNotification = 
       await saveQuote(quote)
       let notification
       try { notification = await sendNotification(quote) }
-      catch { notification = 'failed' }
+      catch (error) {
+        console.error('Quote email notification failed:', error.name, error.message)
+        notification = 'failed'
+      }
       return send(201, { id: quote.id, createdAt: quote.createdAt, notification })
     } catch {
       return send(503, { error: 'Chưa lưu được yêu cầu. Vui lòng thử lại hoặc liên hệ Zalo 0798971155.' })

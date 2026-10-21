@@ -493,7 +493,7 @@ form.addEventListener('submit', async (event) => {
     submit.textContent = 'ĐANG GỬI…'
     form.setAttribute('aria-busy', 'true')
     try {
-      const response = await fetch('/api/quotes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, phone }), signal: AbortSignal.timeout(20000) })
+      const response = await fetch('/api/quotes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, phone }), signal: AbortSignal.timeout(35000) })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'Chưa gửi được yêu cầu.')
       if (result.notification === 'accepted') {

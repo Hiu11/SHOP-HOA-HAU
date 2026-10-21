@@ -11,7 +11,7 @@ export async function notifyQuote(quote, { enabled = emailEnabled(), request = f
   const response = await request(`https://formsubmit.co/ajax/${quoteRecipient}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json', Referer: 'https://shop-hoa-hau.vercel.app/' },
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(15000),
     body: JSON.stringify({
       _subject: `SHOP HOA HẬU — Yêu cầu báo giá ${quote.id}`,
       _template: 'table',
@@ -27,9 +27,12 @@ export async function notifyQuote(quote, { enabled = emailEnabled(), request = f
       'Thời gian': quote.createdAt
     })
   })
-  if (!response.ok) throw new Error('Email provider unavailable')
+  if (!response.ok) throw new Error(`Email provider HTTP ${response.status}`)
   const result = await response.json()
-  if (result.success !== true && result.success !== 'true') throw new Error('Email provider rejected request')
+  if (result.success !== true && result.success !== 'true') {
+    const reason = /activation/i.test(result.message ?? '') ? 'activation_required' : /web server/i.test(result.message ?? '') ? 'website_referrer_required' : 'provider_rejected'
+    throw new Error(`Email provider: ${reason}`)
+  }
   // Provider acceptance is not proof of delivery to the Gmail inbox.
   return 'accepted'
 }
