@@ -18,6 +18,7 @@ test('email contains the complete saved request and uses the designated recipien
   const status = await notifyQuote(item, { enabled: true, request: async (url, options) => {
     calls++
     assert.equal(url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+    assert.equal(options.headers.Referer, 'https://shop-hoa-hau.vercel.app/')
     const body = JSON.parse(options.body)
     for (const value of [item.id, item.name, item.phone, item.flowerType, item.location, item.note]) assert.ok(JSON.stringify(body).includes(value))
     return { ok: true, json: async () => ({ success: 'true' }) }

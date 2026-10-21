@@ -10,7 +10,7 @@ export async function notifyQuote(quote, { enabled = emailEnabled(), request = f
   const [year, month, day] = quote.date.split('-')
   const response = await request(`https://formsubmit.co/ajax/${quoteRecipient}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json', Referer: 'https://shop-hoa-hau.vercel.app/' },
     signal: AbortSignal.timeout(8000),
     body: JSON.stringify({
       _subject: `SHOP HOA HẬU — Yêu cầu báo giá ${quote.id}`,

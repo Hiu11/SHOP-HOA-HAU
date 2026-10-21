@@ -2,14 +2,16 @@
 
 Email nhận dự kiến: `tronghieudo2k4@gmail.com`.
 
-Tích hợp FormSubmit đã được chuẩn bị nhưng **chưa bật**: chủ shop chưa chấp thuận dịch vụ nhận địa chỉ email và thông tin yêu cầu của khách. Không đặt biến môi trường bật dịch vụ trước khi có chấp thuận.
+Chủ shop đã chấp thuận dùng FormSubmit trong cuộc trò chuyện. Yêu cầu kích hoạt đã được gửi; FormSubmit phản hồi đã gửi email có liên kết **Activate Form** đến người nhận. Dịch vụ **chưa bật** cho khách; đang chờ chủ email xác nhận kích hoạt.
 
-Sau khi được chấp thuận:
+Các bước triển khai:
 
 1. Gửi một yêu cầu kích hoạt chỉ chứa dữ liệu kiểm thử, không phải đơn hàng.
 2. Chủ email mở thư FormSubmit và xác nhận kích hoạt.
 3. Đặt `QUOTE_EMAIL_PROVIDER=formsubmit` trong môi trường Vercel và triển khai lại.
 4. Gửi một yêu cầu kiểm thử, kiểm tra mã đã lưu và xác nhận người dùng nhận được thư trong Gmail. API chỉ xác nhận dịch vụ đã nhận thông báo, không xác minh thư đã vào hộp thư.
+
+Lệnh gửi từ máy chủ phải có header `Referer: https://shop-hoa-hau.vercel.app/`; FormSubmit từ chối yêu cầu thiếu địa chỉ trang. Đã bổ sung header này và kiểm tra bằng yêu cầu kích hoạt thực tế.
 
 Khi chưa bật, form tiếp tục soạn yêu cầu qua Zalo. Khi bật, form gửi API để lưu riêng trong Blob rồi chuyển thông báo sang dịch vụ email. Nếu thông báo lỗi, khách được báo rõ yêu cầu đã lưu nhưng email chưa chuyển được, có bản nội dung để gửi Zalo và thông tin nhập được giữ lại.
 
