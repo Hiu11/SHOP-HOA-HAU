@@ -195,6 +195,12 @@ h2,h3{text-wrap:balance;line-height:1.35}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.hero-visual{transform:none}}
 
 /* Botanical brand lettering; UI icons elsewhere remain official Lucide icons. */
+.zalo-request[hidden]{display:none}
+.zalo-request{min-width:0;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--bg)}
+.zalo-request>label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.zalo-request textarea{width:100%;min-width:0;max-width:100%;font:inherit;font-size:14px;line-height:1.6;resize:vertical}
+.zalo-request-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.zalo-request-actions .btn{flex:1 1 140px;font-size:13px;padding:10px 12px}
 .brand-home { flex:0 1 156px; padding-block:6px; }
 .brand-logo { display:block; width:156px; height:auto; max-width:100%; flex-shrink:1; }
 .hero-copy .hero-brand-title { margin:16px 0 8px; }

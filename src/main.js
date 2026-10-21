@@ -6,6 +6,10 @@ import { createElement, Flower2, Truck, BadgeDollarSign, Handshake, Package, Pho
 const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', focusable: 'false', class: 'icon' }).outerHTML
 
 import { products, flowerNames } from '../shared/catalog.js'
+import { zaloDestination, formatZaloRequest, copyRequest } from './zalo-request.js'
+
+const quoteDestination = zaloDestination(window.location.search)
+const quoteZaloUrl = `https://zalo.me/${quoteDestination.phone}`
 
 const app = document.querySelector('#app')
 
@@ -292,7 +296,7 @@ app.innerHTML = `
 
         <form class="quote-form" id="quoteForm">
           <h3>YÊU CẦU BÁO GIÁ SỈ</h3>
-          <p class="form-intro">Cho chúng tôi biết nhu cầu của bạn. Mỗi yêu cầu được lưu kèm mã tham chiếu.</p>
+          <p class="form-intro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền nhu cầu của bạn. Web sẽ soạn nội dung để bạn gửi cho shop qua Zalo.'}</p>
           <div class="input-group">
             <label for="name">Họ và tên</label>
             <input id="name" name="name" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Nhập họ tên" required />
@@ -325,9 +329,17 @@ app.innerHTML = `
             <textarea id="note" name="note" rows="4" maxlength="2000" placeholder="Ví dụ: màu hoa, quy cách đóng gói, giờ nhận..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary full-width">GỬI YÊU CẦU</button>
+          <button type="submit" class="btn btn-primary full-width">${icon(MessageCircle)} ${quoteDestination.testMode ? 'THỬ GỬI ZALO 0961 146 542' : 'GỬI YÊU CẦU QUA ZALO'}</button>
           <p id="formMessage" class="form-message" aria-live="polite"></p>
-          <p class="form-intro">Yêu cầu được lưu để đối chiếu. Để nhận tư vấn trực tiếp, vui lòng liên hệ Zalo 0798 971 155. Gửi form chưa phải xác nhận đơn hàng.</p>
+          <div id="zaloRequest" class="zalo-request full-width" hidden>
+            <label for="zaloContent">Nội dung yêu cầu</label>
+            <textarea id="zaloContent" rows="9" readonly></textarea>
+            <div class="zalo-request-actions">
+              <button type="button" class="btn btn-secondary" id="copyZaloRequest">Sao chép nội dung</button>
+              <a class="btn btn-primary" href="${quoteZaloUrl}" target="_blank" rel="noreferrer">Mở Zalo ${icon(ArrowUpRight)}</a>
+            </div>
+          </div>
+          <p class="form-intro">Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để người nhận nhận được yêu cầu. Shop sẽ trao đổi và xác nhận đơn với bạn.</p>
         </form>
       </div>
     </section>
@@ -421,12 +433,15 @@ const message = document.querySelector('#formMessage')
 const dateInput = document.querySelector('#date')
 const localToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())
 dateInput.min = localToday()
+if (quoteDestination.testMode) {
+  for (const [key, value] of Object.entries({ name: 'Khách kiểm thử website', phone: quoteDestination.phone, flowerType: flowerNames[0], quantity: '1', date: localToday(), location: 'Kiểm thử website — không giao hàng', note: 'Tin nhắn kiểm thử luồng Zalo, không phải đơn đặt hoa.' })) {
+    form.elements.namedItem(key).value = value
+  }
+}
 form.addEventListener('submit', async (event) => {
   event.preventDefault()
   dateInput.min = localToday()
   if (!form.reportValidity()) return
-  const submit = form.querySelector('[type="submit"]')
-  if (submit.disabled) return
   const data = Object.fromEntries(new FormData(form))
   const phone = data.phone.replace(/[\s.()-]/g, '')
   if (!/^(0\d{9}|\+84\d{9})$/.test(phone)) {
@@ -435,25 +450,24 @@ form.addEventListener('submit', async (event) => {
     document.querySelector('#phone').focus()
     return
   }
-  submit.disabled = true
-  submit.textContent = 'ĐANG GỬI…'
-  form.setAttribute('aria-busy', 'true')
   message.classList.remove('error')
-  message.textContent = 'Đang lưu yêu cầu của bạn…'
-  try {
-    const response = await fetch('/api/quotes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal: AbortSignal.timeout(15000) })
-    const result = await response.json()
-    if (!response.ok) throw new Error(result.error || 'Chưa gửi được yêu cầu.')
-    message.textContent = `Đã lưu yêu cầu. Mã của bạn: ${result.id}. Vui lòng giữ mã này để đối chiếu. Đây là yêu cầu báo giá, chưa phải đơn hàng được xác nhận.`
-    form.reset()
-  } catch (error) {
-    message.textContent = error.name === 'TimeoutError' ? 'Chưa nhận được xác nhận. Vui lòng kiểm tra kết nối trước khi gửi lại để tránh trùng yêu cầu.' : error instanceof TypeError || error instanceof SyntaxError ? 'Không kết nối được dịch vụ báo giá. Thông tin vẫn được giữ để bạn thử lại.' : error.message
-    message.classList.add('error')
-  } finally {
-    submit.disabled = false
-    submit.textContent = 'GỬI YÊU CẦU'
-    form.removeAttribute('aria-busy')
-  }
+  const text = formatZaloRequest({ ...data, phone }, quoteDestination.testMode)
+  document.querySelector('#zaloContent').value = text
+  document.querySelector('#zaloRequest').hidden = false
+  message.textContent = `Đã soạn yêu cầu. Dán vào Zalo ${quoteDestination.label} và bấm gửi.`
+  // Open during the original click to avoid popup blocking after an await.
+  const copying = copyRequest(text)
+  window.open(quoteZaloUrl, '_blank', 'noopener,noreferrer')
+  message.textContent = await copying
+    ? `Đã sao chép. Dán vào Zalo ${quoteDestination.label} và bấm gửi. Nếu Zalo chưa mở, dùng nút Mở Zalo bên dưới.`
+    : `Sao chép nội dung bên dưới, mở Zalo ${quoteDestination.label}, dán và bấm gửi.`
+})
+
+document.querySelector('#copyZaloRequest').addEventListener('click', async () => {
+  const content = document.querySelector('#zaloContent')
+  const copied = await copyRequest(content.value)
+  message.textContent = copied ? 'Đã sao chép. Mở Zalo, dán nội dung và bấm gửi.' : 'Chọn nội dung bên dưới rồi dùng Sao chép trên thiết bị của bạn.'
+  if (!copied) { content.focus(); content.select() }
 })
 
 document.querySelector('.top').addEventListener('click', () => {
