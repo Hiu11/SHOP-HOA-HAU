@@ -297,7 +297,7 @@ app.innerHTML = `
 
         <form class="quote-form" id="quoteForm">
           <h3>YÊU CẦU BÁO GIÁ SỈ</h3>
-          <p class="form-intro" id="quoteIntro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền nhu cầu của bạn. Web sẽ soạn nội dung để bạn gửi cho shop qua Zalo.'}</p>
+          <p class="form-intro" id="quoteIntro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền thông tin để shop tiếp nhận nhu cầu và liên hệ báo giá cho bạn.'}</p>
           <div class="input-group">
             <label for="name">Họ và tên</label>
             <input id="name" name="name" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Ví dụ: Nguyễn Minh Anh" required />
@@ -339,7 +339,7 @@ app.innerHTML = `
             <textarea id="note" name="note" rows="3" maxlength="2000" placeholder="Ví dụ: Lay ơn hồng, khoảng 20 bó, muốn nhận lúc 5h sáng. Gọi trước khi giao."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary full-width">${icon(MessageCircle)} ${quoteDestination.testMode ? 'THỬ GỬI ZALO 0961 146 542' : 'GỬI YÊU CẦU QUA ZALO'}</button>
+          <button type="submit" class="btn btn-primary full-width" ${quoteDestination.testMode ? '' : 'disabled'}>${quoteDestination.testMode ? `${icon(MessageCircle)} THỬ GỬI ZALO 0961 146 542` : 'GỬI YÊU CẦU CHO SHOP'}</button>
           <p id="formMessage" class="form-message" aria-live="polite"></p>
           <div id="zaloRequest" class="zalo-request full-width" hidden>
             <label for="zaloContent">Nội dung yêu cầu</label>
@@ -349,7 +349,7 @@ app.innerHTML = `
               <a class="btn btn-primary" href="${quoteZaloUrl}" target="_blank" rel="noreferrer">Mở Zalo ${icon(ArrowUpRight)}</a>
             </div>
           </div>
-          <p class="form-intro" id="quoteInstructions">Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để người nhận nhận được yêu cầu. Shop sẽ trao đổi và xác nhận đơn với bạn.</p>
+          <p class="form-intro" id="quoteInstructions">${quoteDestination.testMode ? `Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để kiểm thử.` : 'Shop sẽ liên hệ qua số điện thoại bạn cung cấp để báo giá và xác nhận đơn.'}</p>
         </form>
       </div>
     </section>
@@ -441,16 +441,28 @@ quoteTriggers.forEach((button) => {
 const form = document.querySelector('#quoteForm')
 const message = document.querySelector('#formMessage')
 const dateInput = document.querySelector('#date')
-let emailEnabled = false
+let emailEnabled = quoteDestination.testMode ? false : null
 initAddressForm(form)
 if (!quoteDestination.testMode) {
-  fetch('/api/quote-config').then(response => response.ok ? response.json() : {}).then(config => {
+  fetch('/api/quote-config', { signal: AbortSignal.timeout(10000) }).then(response => {
+    if (!response.ok) throw new Error('Configuration unavailable')
+    return response.json()
+  }).then(config => {
+    if (typeof config.emailEnabled !== 'boolean') throw new Error('Invalid configuration')
     emailEnabled = config.emailEnabled === true
-    if (!emailEnabled) return
+    form.querySelector('[type="submit"]').disabled = false
+    if (!emailEnabled) {
+      form.querySelector('[type="submit"]').textContent = 'GỬI YÊU CẦU QUA ZALO'
+      document.querySelector('#quoteInstructions').textContent = `Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để shop nhận được yêu cầu.`
+      return
+    }
     document.querySelector('#quoteIntro').textContent = 'Điền nhu cầu của bạn. Yêu cầu sẽ được gửi trực tiếp cho shop, không cần mở ứng dụng khác.'
     form.querySelector('[type="submit"]').textContent = 'GỬI YÊU CẦU CHO SHOP'
     document.querySelector('#quoteInstructions').textContent = 'Shop sẽ liên hệ qua số điện thoại bạn cung cấp để báo giá và xác nhận. Gửi yêu cầu chưa phải xác nhận đơn hàng.'
-  }).catch(() => {})
+  }).catch(() => {
+    message.textContent = 'Chưa kết nối được dịch vụ nhận yêu cầu. Vui lòng tải lại trang hoặc liên hệ shop qua nút Zalo.'
+    message.classList.add('error')
+  })
 }
 const localToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())
 dateInput.min = localToday()
@@ -461,6 +473,7 @@ if (quoteDestination.testMode) {
 }
 form.addEventListener('submit', async (event) => {
   event.preventDefault()
+  if (emailEnabled === null) return
   dateInput.min = localToday()
   if (!form.reportValidity()) return
   const data = Object.fromEntries(new FormData(form))

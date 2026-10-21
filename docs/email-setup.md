@@ -2,7 +2,7 @@
 
 Email nhận dự kiến: `tronghieudo2k4@gmail.com`.
 
-Chủ shop đã chấp thuận dùng FormSubmit trong cuộc trò chuyện. Yêu cầu kích hoạt đã được gửi; FormSubmit phản hồi đã gửi email có liên kết **Activate Form** đến người nhận. Dịch vụ **chưa bật** cho khách; đang chờ chủ email xác nhận kích hoạt.
+Chủ shop đã chấp thuận dùng FormSubmit và xác nhận đã bấm kích hoạt email trong cuộc trò chuyện. Biến `QUOTE_EMAIL_PROVIDER=formsubmit` được bật cho production. Kiểm tra phản hồi dịch vụ và email kiểm thử sau mỗi lần cấu hình lại; không coi phản hồi chấp nhận là bằng chứng thư đã tới hộp thư.
 
 Các bước triển khai:
 
