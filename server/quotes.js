@@ -17,7 +17,7 @@ export function validateQuote(input) {
   data.quantity = Number(data.quantity)
   if (!Number.isInteger(data.quantity) || data.quantity < 1 || data.quantity > 100000) throw new Error('Số lượng cần là số nguyên từ 1 đến 100.000 bó.')
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.date) || !Number.isFinite(Date.parse(data.date)) || new Date(data.date).toISOString().slice(0, 10) !== data.date || data.date < today()) throw new Error('Ngày nhận hoa phải hợp lệ và không trước hôm nay.')
-  if (data.location.length < 5 || data.location.length > 300) throw new Error('Địa điểm giao cần từ 5 đến 300 ký tự.')
+  if (data.location.length < 5 || data.location.length > 600) throw new Error('Địa điểm giao cần từ 5 đến 600 ký tự.')
   if (data.note.length > 2000) throw new Error('Ghi chú tối đa 2.000 ký tự.')
   return { id: `BG-${randomUUID()}`, createdAt: new Date().toISOString(), status: 'new', ...data }
 }

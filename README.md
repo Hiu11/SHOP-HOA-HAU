@@ -35,7 +35,11 @@ Bản build chạy tại http://localhost:3001, phục vụ cả trang và API. 
 
 `POST /api/quotes` nhận name, phone, flowerType, quantity (bó), date (YYYY-MM-DD), location, note. API kiểm tra dữ liệu, lưu thành công mới trả HTTP 201 cùng mã yêu cầu. Ngày giao được kiểm tra theo giờ Việt Nam.
 
-Yêu cầu được lưu nối tiếp trong `data/quotes.jsonl`. Chủ dự án có thể đọc tệp này trên máy chủ; không có API công khai đọc dữ liệu khách hàng. Thư mục data được bỏ qua khi quản lý mã nguồn. Giữ và sao lưu thư mục này khi cập nhật bản build. Hiện chưa có trang quản trị, gửi email/Zalo tự động, thanh toán hay xác nhận đơn hàng.
+Khi form dùng API, yêu cầu được lưu nối tiếp trong `data/quotes.jsonl` ở local hoặc Vercel Blob private khi triển khai. Không có API công khai đọc dữ liệu khách hàng. Chưa có trang quản trị, thanh toán hay tự xác nhận đơn hàng.
+
+Gửi email tự động đã được chuẩn bị, chỉ bật sau khi chủ shop chấp thuận dịch vụ và kích hoạt email nhận. Xem [hướng dẫn email](docs/email-setup.md). Khi chưa bật, form giữ luồng soạn nội dung và mở Zalo; link `?zalo-test=1#contact` dùng số kiểm thử riêng. Không xem thao tác mở Zalo là tin nhắn đã gửi.
+
+Form địa chỉ có gợi ý tỉnh/thành và phường/xã từ danh mục lưu trong dự án; quận/huyện cũ không bắt buộc. Tên đường có ví dụ nhập, không phải dữ liệu bản đồ đầy đủ. Chạy `node scripts/update-addresses.mjs` để cập nhật danh mục từ https://provinces.open-api.vn/.
 
 ## Triển khai Vercel
 
@@ -45,4 +49,4 @@ Kho `shop-hoa-hau-quotes` được nối với project `shop-hoa-hau` cho produc
 
 Repo GitHub `Hiu11/SHOP-HOA-HAU` được nối với project Vercel. Các lần đẩy lên `main` sẽ tạo bản production mới. Kiểm tra bằng `npm test` và `npm run build` trước khi đẩy.
 
-Hiện chạy cục bộ, chưa triển khai lên Internet. Hotline, tên shop, giờ mở cửa và địa chỉ do chủ dự án cung cấp. Giá và tình trạng màu hoa cần liên hệ shop xác nhận. Ảnh minh họa từ Pexels và Wikimedia Commons được lưu trong dự án, không phải ảnh hàng thực tế. Khi triển khai cần môi trường Node với ổ đĩa lưu trữ bền vững và cấu hình HTTPS/proxy phù hợp.
+Website công khai tại https://shop-hoa-hau.vercel.app/. Hotline, tên shop, giờ mở cửa, nguồn hoa Đà Lạt và địa chỉ do chủ dự án cung cấp. Giá và tình trạng màu hoa cần liên hệ shop xác nhận. Ảnh minh họa từ Pexels và Wikimedia Commons được lưu trong dự án, không phải ảnh hàng thực tế.

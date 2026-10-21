@@ -1,4 +1,5 @@
 import { validateQuote } from '../server/quotes.js'
+import { notifyQuote } from '../server/quote-email.js'
 
 async function saveToBlob(quote) {
   if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error('Quote storage not configured')
@@ -12,7 +13,7 @@ async function saveToBlob(quote) {
 }
 
 // Vercel parses JSON request bodies. Keep storage injectable for offline tests.
-export function createQuoteHandler({ saveQuote = saveToBlob } = {}) {
+export function createQuoteHandler({ saveQuote = saveToBlob, sendNotification = notifyQuote } = {}) {
   return async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, data) => res.status(status).json(data)
@@ -32,7 +33,10 @@ export function createQuoteHandler({ saveQuote = saveToBlob } = {}) {
     }
     try {
       await saveQuote(quote)
-      return send(201, { id: quote.id, createdAt: quote.createdAt })
+      let notification
+      try { notification = await sendNotification(quote) }
+      catch { notification = 'failed' }
+      return send(201, { id: quote.id, createdAt: quote.createdAt, notification })
     } catch {
       return send(503, { error: 'Chưa lưu được yêu cầu. Vui lòng thử lại hoặc liên hệ Zalo 0798971155.' })
     }

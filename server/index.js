@@ -3,15 +3,20 @@ import { mkdir, appendFile, readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { validateQuote } from './quotes.js'
+import { emailEnabled, notifyQuote } from './quote-email.js'
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url))
 const dataDir = fileURLToPath(new URL('../data/', import.meta.url))
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.ttf': 'font/ttf', '.ico': 'image/x-icon' }
 const json = (res, status, data) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(data)) }
 
-export function createApp({ storageDirectory = dataDir, staticDirectory = root } = {}) {
+export function createApp({ storageDirectory = dataDir, staticDirectory = root, sendNotification = notifyQuote } = {}) {
   return createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost')
+    if (url.pathname === '/api/quote-config') {
+      if (req.method !== 'GET') { res.setHeader('Allow', 'GET'); return json(res, 405, { error: 'Phương thức không được hỗ trợ.' }) }
+      return json(res, 200, { emailEnabled: emailEnabled() })
+    }
     if (url.pathname === '/api/quotes') {
       if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return json(res, 405, { error: 'Phương thức không được hỗ trợ.' }) }
       if (!req.headers['content-type']?.startsWith('application/json')) return json(res, 415, { error: 'Yêu cầu cần ở định dạng JSON.' })
@@ -29,7 +34,10 @@ export function createApp({ storageDirectory = dataDir, staticDirectory = root }
       try {
         await mkdir(storageDirectory, { recursive: true })
         await appendFile(resolve(storageDirectory, 'quotes.jsonl'), JSON.stringify(quote) + '\n', { encoding: 'utf8', mode: 0o600 })
-        return json(res, 201, { id: quote.id, createdAt: quote.createdAt })
+        let notification
+        try { notification = await sendNotification(quote) }
+        catch { notification = 'failed' }
+        return json(res, 201, { id: quote.id, createdAt: quote.createdAt, notification })
       } catch { return json(res, 500, { error: 'Chưa lưu được yêu cầu. Vui lòng thử lại sau.' }) }
     }
     if (url.pathname.startsWith('/api/')) return json(res, 404, { error: 'Không tìm thấy địa chỉ.' })

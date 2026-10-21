@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 data/
+!public/data/
+!public/data/*.json
 .env
 .env.*
 !.env.example

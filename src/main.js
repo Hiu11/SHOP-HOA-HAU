@@ -7,6 +7,7 @@ const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', 
 
 import { products, flowerNames } from '../shared/catalog.js'
 import { zaloDestination, formatZaloRequest, copyRequest } from './zalo-request.js'
+import { composeAddress, initAddressForm } from './address-form.js'
 
 const quoteDestination = zaloDestination(window.location.search)
 const quoteZaloUrl = `https://zalo.me/${quoteDestination.phone}`
@@ -296,14 +297,15 @@ app.innerHTML = `
 
         <form class="quote-form" id="quoteForm">
           <h3>YÊU CẦU BÁO GIÁ SỈ</h3>
-          <p class="form-intro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền nhu cầu của bạn. Web sẽ soạn nội dung để bạn gửi cho shop qua Zalo.'}</p>
+          <p class="form-intro" id="quoteIntro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền nhu cầu của bạn. Web sẽ soạn nội dung để bạn gửi cho shop qua Zalo.'}</p>
           <div class="input-group">
             <label for="name">Họ và tên</label>
-            <input id="name" name="name" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Nhập họ tên" required />
+            <input id="name" name="name" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Ví dụ: Nguyễn Minh Anh" required />
           </div>
           <div class="input-group">
             <label for="phone">Số điện thoại</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="20" placeholder="Ví dụ: 0912 345 678" required />
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Ví dụ: 0912 345 678" aria-describedby="phoneHelp" required />
+            <small id="phoneHelp">Số điện thoại để shop liên hệ xác nhận nhu cầu.</small>
           </div>
           <div class="input-group">
             <label for="flowerType">Loại hoa / màu hoa</label>
@@ -314,19 +316,27 @@ app.innerHTML = `
           </div>
           <div class="input-group">
             <label for="quantity">Số lượng dự kiến (bó)</label>
-            <input id="quantity" name="quantity" type="number" min="1" max="100000" step="1" placeholder="Ví dụ: 200" required />
+            <input id="quantity" name="quantity" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="Ví dụ: 20" aria-describedby="quantityHelp" required />
+            <small id="quantityHelp">Nhập số bó dự kiến; shop sẽ trao đổi quy cách và giá sỉ.</small>
           </div>
           <div class="input-group">
             <label for="date">Ngày cần nhận</label>
-            <input id="date" name="date" type="date" required />
+            <input id="date" name="date" type="date" aria-describedby="dateHelp" required />
+            <small id="dateHelp">Chọn ngày bạn muốn nhận hoa, từ hôm nay trở đi.</small>
           </div>
-          <div class="input-group">
-            <label for="location">Địa điểm giao</label>
-            <input id="location" name="location" type="text" autocomplete="street-address" minlength="5" maxlength="300" placeholder="Nhập địa điểm giao" required />
-          </div>
+          <fieldset class="address-fields full-width">
+            <legend>Địa chỉ nhận hoa</legend>
+            <p id="addressHelp">Gõ để xem gợi ý hoặc nhập địa chỉ bằng tay. Chọn tỉnh/thành trước để có gợi ý phường/xã phù hợp.</p>
+            <div class="address-grid">
+              <div class="input-group"><label for="province">Tỉnh / thành phố</label><input id="province" name="province" list="provinceSuggestions" autocomplete="address-level1" maxlength="100" placeholder="Ví dụ: Thành phố Hồ Chí Minh" required /><datalist id="provinceSuggestions"></datalist></div>
+              <div class="input-group"><label for="ward">Phường / xã</label><input id="ward" name="ward" list="wardSuggestions" autocomplete="address-level2" maxlength="100" placeholder="Ví dụ: Phường Vườn Lài" required /><datalist id="wardSuggestions"></datalist></div>
+              <div class="input-group full-width"><label for="street">Số nhà, tên đường</label><input id="street" name="street" list="streetSuggestions" autocomplete="address-line1" minlength="3" maxlength="160" placeholder="Ví dụ: 80/12 Hồ Thị Kỷ" required /><datalist id="streetSuggestions"></datalist><small>Ghi cả số nhà, hẻm/ngõ và tên đường. Các tên đường gợi ý chỉ là ví dụ.</small></div>
+              <div class="input-group full-width"><label for="district">Quận / huyện cũ <span class="optional-label">(không bắt buộc)</span></label><input id="district" name="district" list="districtSuggestions" maxlength="120" placeholder="Ví dụ: Quận 10, Thành phố Hồ Chí Minh" /><datalist id="districtSuggestions"></datalist><small>Điền nếu cần đối chiếu địa chỉ cũ hoặc giúp shop tìm nơi giao dễ hơn.</small></div>
+            </div>
+          </fieldset>
           <div class="input-group">
             <label for="note">Màu khác / ghi chú</label>
-            <textarea id="note" name="note" rows="4" maxlength="2000" placeholder="Ví dụ: màu hoa, quy cách đóng gói, giờ nhận..."></textarea>
+            <textarea id="note" name="note" rows="3" maxlength="2000" placeholder="Ví dụ: Lay ơn hồng, khoảng 20 bó, muốn nhận lúc 5h sáng. Gọi trước khi giao."></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary full-width">${icon(MessageCircle)} ${quoteDestination.testMode ? 'THỬ GỬI ZALO 0961 146 542' : 'GỬI YÊU CẦU QUA ZALO'}</button>
@@ -339,7 +349,7 @@ app.innerHTML = `
               <a class="btn btn-primary" href="${quoteZaloUrl}" target="_blank" rel="noreferrer">Mở Zalo ${icon(ArrowUpRight)}</a>
             </div>
           </div>
-          <p class="form-intro">Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để người nhận nhận được yêu cầu. Shop sẽ trao đổi và xác nhận đơn với bạn.</p>
+          <p class="form-intro" id="quoteInstructions">Dán nội dung vào Zalo ${quoteDestination.label} và bấm gửi để người nhận nhận được yêu cầu. Shop sẽ trao đổi và xác nhận đơn với bạn.</p>
         </form>
       </div>
     </section>
@@ -431,10 +441,21 @@ quoteTriggers.forEach((button) => {
 const form = document.querySelector('#quoteForm')
 const message = document.querySelector('#formMessage')
 const dateInput = document.querySelector('#date')
+let emailEnabled = false
+initAddressForm(form)
+if (!quoteDestination.testMode) {
+  fetch('/api/quote-config').then(response => response.ok ? response.json() : {}).then(config => {
+    emailEnabled = config.emailEnabled === true
+    if (!emailEnabled) return
+    document.querySelector('#quoteIntro').textContent = 'Điền nhu cầu của bạn. Yêu cầu sẽ được gửi trực tiếp cho shop, không cần mở ứng dụng khác.'
+    form.querySelector('[type="submit"]').textContent = 'GỬI YÊU CẦU CHO SHOP'
+    document.querySelector('#quoteInstructions').textContent = 'Shop sẽ liên hệ qua số điện thoại bạn cung cấp để báo giá và xác nhận. Gửi yêu cầu chưa phải xác nhận đơn hàng.'
+  }).catch(() => {})
+}
 const localToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())
 dateInput.min = localToday()
 if (quoteDestination.testMode) {
-  for (const [key, value] of Object.entries({ name: 'Khách kiểm thử website', phone: quoteDestination.phone, flowerType: flowerNames[0], quantity: '1', date: localToday(), location: 'Kiểm thử website — không giao hàng', note: 'Tin nhắn kiểm thử luồng Zalo, không phải đơn đặt hoa.' })) {
+  for (const [key, value] of Object.entries({ name: 'Khách kiểm thử website', phone: quoteDestination.phone, flowerType: flowerNames[0], quantity: '1', date: localToday(), province: 'Thành phố Hồ Chí Minh', ward: 'Phường Vườn Lài', street: 'KIỂM THỬ — không giao hàng', note: 'Tin nhắn kiểm thử luồng Zalo, không phải đơn đặt hoa.' })) {
     form.elements.namedItem(key).value = value
   }
 }
@@ -443,6 +464,7 @@ form.addEventListener('submit', async (event) => {
   dateInput.min = localToday()
   if (!form.reportValidity()) return
   const data = Object.fromEntries(new FormData(form))
+  data.location = composeAddress(data)
   const phone = data.phone.replace(/[\s.()-]/g, '')
   if (!/^(0\d{9}|\+84\d{9})$/.test(phone)) {
     message.textContent = 'Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 chữ số hoặc +84).'
@@ -451,6 +473,35 @@ form.addEventListener('submit', async (event) => {
     return
   }
   message.classList.remove('error')
+  if (emailEnabled) {
+    const submit = form.querySelector('[type="submit"]')
+    if (submit.disabled) return
+    submit.disabled = true
+    submit.textContent = 'ĐANG GỬI…'
+    form.setAttribute('aria-busy', 'true')
+    try {
+      const response = await fetch('/api/quotes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, phone }), signal: AbortSignal.timeout(20000) })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'Chưa gửi được yêu cầu.')
+      if (result.notification === 'accepted') {
+        message.textContent = `Đã lưu yêu cầu ${result.id} và chuyển thông báo đến dịch vụ email của shop. Shop sẽ liên hệ để xác nhận.`
+      } else {
+        message.textContent = `Đã lưu yêu cầu ${result.id}, nhưng chưa chuyển được thông báo email. Bạn có thể gửi thêm qua Zalo bên dưới để shop nhận ngay.`
+        document.querySelector('#zaloContent').value = formatZaloRequest({ ...data, phone })
+        document.querySelector('#zaloRequest').hidden = false
+      }
+    } catch (error) {
+      message.classList.add('error')
+      message.textContent = error.name === 'TimeoutError' ? 'Chưa nhận được xác nhận. Vui lòng liên hệ Zalo để kiểm tra trước khi gửi lại.' : 'Chưa nhận được xác nhận gửi yêu cầu. Thông tin vẫn được giữ; bạn có thể liên hệ Zalo để kiểm tra.'
+      document.querySelector('#zaloContent').value = formatZaloRequest({ ...data, phone })
+      document.querySelector('#zaloRequest').hidden = false
+    } finally {
+      submit.disabled = false
+      submit.textContent = 'GỬI YÊU CẦU CHO SHOP'
+      form.removeAttribute('aria-busy')
+    }
+    return
+  }
   const text = formatZaloRequest({ ...data, phone }, quoteDestination.testMode)
   document.querySelector('#zaloContent').value = text
   document.querySelector('#zaloRequest').hidden = false
