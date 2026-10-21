@@ -1,3 +1,5 @@
+import { quoteTimeLabel } from '../shared/quote-time.js'
+
 export function zaloDestination(search = '') {
   const testMode = new URLSearchParams(search).get('zalo-test') === '1'
   return { testMode, phone: testMode ? '0961146542' : '0798971155', label: testMode ? '0961 146 542' : '0798 971 155' }
@@ -14,6 +16,7 @@ export function formatZaloRequest(data, testMode = false) {
     `Loại hoa / màu: ${value('flowerType')}`,
     `Số lượng: ${value('quantity')} bó`,
     `Ngày cần nhận: ${day}/${month}/${year}`,
+    `Thời gian nhận báo giá: ${quoteTimeLabel(value('quoteTime'))}`,
     `Địa điểm giao: ${value('location')}`,
     ...(value('note') ? [`Ghi chú: ${value('note')}`] : [])
   ].join('\n')

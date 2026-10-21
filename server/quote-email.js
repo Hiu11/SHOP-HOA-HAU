@@ -1,3 +1,5 @@
+import { quoteTimeLabel } from '../shared/quote-time.js'
+
 export const quoteRecipient = 'tronghieudo2k4@gmail.com'
 
 // Enable only after the owner approves FormSubmit and activates the recipient.
@@ -19,6 +21,7 @@ export function prepareQuoteEmail(quote) {
       'Loại hoa': quote.flowerType,
       'Số lượng': `${quote.quantity} bó`,
       'Ngày nhận': `${day}/${month}/${year}`,
+      'Thời gian nhận báo giá': quoteTimeLabel(quote.quoteTime),
       'Địa chỉ giao': quote.location,
       'Ghi chú': quote.note || 'Không có',
       'Thời gian': quote.createdAt

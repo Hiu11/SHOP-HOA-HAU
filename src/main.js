@@ -8,6 +8,8 @@ const icon = (definition) => createElement(definition, { 'aria-hidden': 'true', 
 import { products, flowerNames } from '../shared/catalog.js'
 import { zaloDestination, formatZaloRequest, copyRequest } from './zalo-request.js'
 import { composeAddress, initAddressForm } from './address-form.js'
+import { initFormValidation } from './form-validation.js'
+import { quoteTimeSlots } from '../shared/quote-time.js'
 
 const quoteDestination = zaloDestination(window.location.search)
 const quoteZaloUrl = `https://zalo.me/${quoteDestination.phone}`
@@ -295,7 +297,7 @@ app.innerHTML = `
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=80%2F12%20H%E1%BB%93%20Th%E1%BB%8B%20K%E1%BB%B7%2C%20ph%C6%B0%E1%BB%9Dng%20V%C6%B0%E1%BB%9Dn%20L%C3%A0i%2C%20TP.HCM" target="_blank" rel="noreferrer">Mở khu vực 80/12 Hồ Thị Kỷ trên Google Maps</a>
         </div>
 
-        <form class="quote-form" id="quoteForm">
+        <form class="quote-form" id="quoteForm" novalidate>
           <h3>YÊU CẦU BÁO GIÁ SỈ</h3>
           <p class="form-intro" id="quoteIntro">${quoteDestination.testMode ? 'CHẾ ĐỘ KIỂM THỬ — gửi Zalo 0961 146 542, không phải đơn hàng.' : 'Điền thông tin để shop tiếp nhận nhu cầu và liên hệ báo giá cho bạn.'}</p>
           <div class="input-group">
@@ -320,18 +322,28 @@ app.innerHTML = `
             <small id="quantityHelp">Nhập số bó dự kiến; shop sẽ trao đổi quy cách và giá sỉ.</small>
           </div>
           <div class="input-group">
-            <label for="date">Ngày cần nhận</label>
+            <label for="date">Ngày nhận hoa</label>
             <input id="date" name="date" type="date" aria-describedby="dateHelp" required />
             <small id="dateHelp">Chọn ngày bạn muốn nhận hoa, từ hôm nay trở đi.</small>
           </div>
+          <div class="input-group">
+            <label for="quoteTime">Thời gian nhận báo giá</label>
+            <select id="quoteTime" name="quoteTime" aria-describedby="quoteTimeHelp" required>
+              <option value="">Chọn thời gian phù hợp</option>
+              <option value="now">Ngay bây giờ</option>
+              <option value="anytime">Bất cứ lúc nào</option>
+              <optgroup label="Chọn giờ cụ thể (giờ Việt Nam)">${quoteTimeSlots.map(time => `<option value="${time}">${time}</option>`).join('')}</optgroup>
+            </select>
+            <small id="quoteTimeHelp">Các mốc giờ cách nhau 15 phút, theo giờ Việt Nam.</small>
+          </div>
+          <p class="response-notice">${icon(Clock3)} Shop sẽ phản hồi chậm nhất sau 24 giờ kể từ khi nhận yêu cầu.</p>
           <fieldset class="address-fields full-width">
             <legend>Địa chỉ nhận hoa</legend>
             <p id="addressHelp">Gõ để xem gợi ý hoặc nhập địa chỉ bằng tay. Chọn tỉnh/thành trước để có gợi ý phường/xã phù hợp.</p>
             <div class="address-grid">
-              <div class="input-group"><label for="province">Tỉnh / thành phố</label><input id="province" name="province" list="provinceSuggestions" autocomplete="address-level1" maxlength="100" placeholder="Ví dụ: Thành phố Hồ Chí Minh" required /><datalist id="provinceSuggestions"></datalist></div>
-              <div class="input-group"><label for="ward">Phường / xã</label><input id="ward" name="ward" list="wardSuggestions" autocomplete="address-level2" maxlength="100" placeholder="Ví dụ: Phường Vườn Lài" required /><datalist id="wardSuggestions"></datalist></div>
-              <div class="input-group full-width"><label for="street">Số nhà, tên đường</label><input id="street" name="street" list="streetSuggestions" autocomplete="address-line1" minlength="3" maxlength="160" placeholder="Ví dụ: 80/12 Hồ Thị Kỷ" required /><datalist id="streetSuggestions"></datalist><small>Ghi cả số nhà, hẻm/ngõ và tên đường. Các tên đường gợi ý chỉ là ví dụ.</small></div>
-              <div class="input-group full-width"><label for="district">Quận / huyện cũ <span class="optional-label">(không bắt buộc)</span></label><input id="district" name="district" list="districtSuggestions" maxlength="120" placeholder="Ví dụ: Quận 10, Thành phố Hồ Chí Minh" /><datalist id="districtSuggestions"></datalist><small>Điền nếu cần đối chiếu địa chỉ cũ hoặc giúp shop tìm nơi giao dễ hơn.</small></div>
+              <div class="input-group"><label for="province">Tỉnh / thành phố</label><input id="province" name="province" autocomplete="address-level1" maxlength="100" placeholder="Ví dụ: Thành phố Hồ Chí Minh" required /></div>
+              <div class="input-group"><label for="ward">Phường / xã</label><input id="ward" name="ward" autocomplete="address-level2" maxlength="100" placeholder="Ví dụ: Phường Vườn Lài" required /></div>
+              <div class="input-group full-width"><label for="street">Số nhà, tên đường</label><input id="street" name="street" autocomplete="address-line1" minlength="3" maxlength="160" placeholder="Ví dụ: 80/12 Hồ Thị Kỷ" required /><small>Ghi cả số nhà, hẻm/ngõ và tên đường. Các tên đường gợi ý chỉ là ví dụ.</small></div>
             </div>
           </fieldset>
           <div class="input-group">
@@ -443,6 +455,7 @@ const message = document.querySelector('#formMessage')
 const dateInput = document.querySelector('#date')
 let emailEnabled = quoteDestination.testMode ? false : null
 initAddressForm(form)
+const validateForm = initFormValidation(form)
 if (!quoteDestination.testMode) {
   fetch('/api/quote-config', { signal: AbortSignal.timeout(10000) }).then(response => {
     if (!response.ok) throw new Error('Configuration unavailable')
@@ -458,7 +471,7 @@ if (!quoteDestination.testMode) {
     }
     document.querySelector('#quoteIntro').textContent = 'Điền nhu cầu của bạn. Yêu cầu sẽ được gửi trực tiếp cho shop, không cần mở ứng dụng khác.'
     form.querySelector('[type="submit"]').textContent = 'GỬI YÊU CẦU CHO SHOP'
-    document.querySelector('#quoteInstructions').textContent = 'Shop sẽ liên hệ qua số điện thoại bạn cung cấp để báo giá và xác nhận. Gửi yêu cầu chưa phải xác nhận đơn hàng.'
+    document.querySelector('#quoteInstructions').textContent = 'Shop sẽ liên hệ theo thời gian bạn chọn và phản hồi chậm nhất sau 24 giờ. Gửi yêu cầu chưa phải xác nhận đơn hàng.'
   }).catch(() => {
     message.textContent = 'Chưa kết nối được dịch vụ nhận yêu cầu. Vui lòng tải lại trang hoặc liên hệ shop qua nút Zalo.'
     message.classList.add('error')
@@ -467,7 +480,7 @@ if (!quoteDestination.testMode) {
 const localToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())
 dateInput.min = localToday()
 if (quoteDestination.testMode) {
-  for (const [key, value] of Object.entries({ name: 'Khách kiểm thử website', phone: quoteDestination.phone, flowerType: flowerNames[0], quantity: '1', date: localToday(), province: 'Thành phố Hồ Chí Minh', ward: 'Phường Vườn Lài', street: 'KIỂM THỬ — không giao hàng', note: 'Tin nhắn kiểm thử luồng Zalo, không phải đơn đặt hoa.' })) {
+  for (const [key, value] of Object.entries({ name: 'Khách kiểm thử website', phone: quoteDestination.phone, flowerType: flowerNames[0], quantity: '1', date: localToday(), quoteTime: 'now', province: 'Thành phố Hồ Chí Minh', ward: 'Phường Vườn Lài', street: 'KIỂM THỬ — không giao hàng', note: 'Tin nhắn kiểm thử luồng Zalo, không phải đơn đặt hoa.' })) {
     form.elements.namedItem(key).value = value
   }
 }
@@ -475,7 +488,11 @@ form.addEventListener('submit', async (event) => {
   event.preventDefault()
   if (emailEnabled === null) return
   dateInput.min = localToday()
-  if (!form.reportValidity()) return
+  if (!validateForm()) {
+    message.textContent = 'Vui lòng kiểm tra các ô được đánh dấu đỏ.'
+    message.classList.add('error')
+    return
+  }
   const data = Object.fromEntries(new FormData(form))
   data.location = composeAddress(data)
   const phone = data.phone.replace(/[\s.()-]/g, '')
@@ -508,7 +525,7 @@ form.addEventListener('submit', async (event) => {
         } catch { result.notification = 'failed' }
       }
       if (result.notification === 'accepted') {
-        message.textContent = `Đã lưu yêu cầu ${result.id} và chuyển thông báo đến dịch vụ email của shop. Shop sẽ liên hệ để xác nhận.`
+        message.textContent = `Đã nhận yêu cầu ${result.id} và chuyển thông báo email. Shop sẽ phản hồi chậm nhất sau 24 giờ.`
       } else {
         message.textContent = `Đã lưu yêu cầu ${result.id}, nhưng chưa chuyển được thông báo email. Bạn có thể gửi thêm qua Zalo bên dưới để shop nhận ngay.`
         document.querySelector('#zaloContent').value = formatZaloRequest({ ...data, phone })

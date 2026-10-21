@@ -6,7 +6,7 @@ import { createQuoteHandler } from '../api/quotes.js'
 import { today } from './quotes.js'
 import { composeAddress } from '../src/address-form.js'
 
-const quote = () => ({ id: 'BG-test', createdAt: new Date().toISOString(), name: 'Khách kiểm thử', phone: '0912345678', flowerType: 'Hoa hướng dương', quantity: 2, date: today(), location: '80/12 Hồ Thị Kỷ, Phường Vườn Lài, Thành phố Hồ Chí Minh', note: 'Không giao hàng' })
+const quote = () => ({ id: 'BG-test', createdAt: new Date().toISOString(), name: 'Khách kiểm thử', phone: '0912345678', flowerType: 'Hoa hướng dương', quantity: 2, date: today(), quoteTime: '08:15', location: '80/12 Hồ Thị Kỷ, Phường Vườn Lài, Thành phố Hồ Chí Minh', note: 'Không giao hàng' })
 
 test('email transport stays offline until explicitly enabled', async () => {
   assert.equal(await notifyQuote(quote(), { enabled: false, request: () => { throw new Error('Must not contact provider') } }), 'disabled')
@@ -20,6 +20,7 @@ test('email contains the complete saved request and uses the designated recipien
     assert.equal(url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
     assert.equal(options.headers.Referer, 'https://shop-hoa-hau.vercel.app/')
     const body = JSON.parse(options.body)
+    assert.equal(body['Thời gian nhận báo giá'], '08:15 (giờ Việt Nam)')
     for (const value of [item.id, item.name, item.phone, item.flowerType, item.location, item.note]) assert.ok(JSON.stringify(body).includes(value))
     return { ok: true, json: async () => ({ success: 'true' }) }
   } })
@@ -55,12 +56,12 @@ test('email failure preserves the saved request and its reference for manual fol
   assert.equal(res.body.notification, 'failed')
 })
 
-test('address suggestions include current wards and clearly separate legacy districts', async () => {
+test('addresses include current wards and omit districts entirely', async () => {
   const data = JSON.parse(await readFile(new URL('../public/address-data/vietnam-addresses.json', import.meta.url), 'utf8'))
   assert.equal(data.provinces.length, 34)
   const hcm = data.provinces.find(p => p.name === 'Thành phố Hồ Chí Minh')
   assert.ok(hcm.wards.includes('Phường Vườn Lài'))
-  assert.ok(data.legacyDistricts.includes('Quận 10, Thành phố Hồ Chí Minh'))
-  assert.equal(composeAddress({ street: ' 80/12 Hồ Thị Kỷ ', ward: 'Phường Vườn Lài', district: 'Quận 10, Thành phố Hồ Chí Minh', province: hcm.name }), '80/12 Hồ Thị Kỷ, Phường Vườn Lài, Quận 10, Thành phố Hồ Chí Minh')
+  assert.equal(data.legacyDistricts, undefined)
+  assert.equal(composeAddress({ street: ' 80/12 Hồ Thị Kỷ ', ward: 'Phường Vườn Lài', district: 'Quận 10, Thành phố Hồ Chí Minh', province: hcm.name }), '80/12 Hồ Thị Kỷ, Phường Vườn Lài, Thành phố Hồ Chí Minh')
   assert.equal(composeAddress({ street: '80/12 Hồ Thị Kỷ', ward: 'Phường Vườn Lài', province: hcm.name }), '80/12 Hồ Thị Kỷ, Phường Vườn Lài, Thành phố Hồ Chí Minh')
 })

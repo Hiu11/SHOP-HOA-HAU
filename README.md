@@ -33,13 +33,13 @@ Bản build chạy tại http://localhost:3001, phục vụ cả trang và API. 
 
 ## Yêu cầu báo giá
 
-`POST /api/quotes` nhận name, phone, flowerType, quantity (bó), date (YYYY-MM-DD), location, note. API kiểm tra dữ liệu, lưu thành công mới trả HTTP 201 cùng mã yêu cầu. Ngày giao được kiểm tra theo giờ Việt Nam.
+`POST /api/quotes` nhận name, phone, flowerType, quantity (bó), date (YYYY-MM-DD), quoteTime (`now`, `anytime`, hoặc HH:MM cách 15 phút), location, note. API kiểm tra dữ liệu, lưu thành công mới trả HTTP 201 cùng mã yêu cầu. Ngày giao được kiểm tra theo giờ Việt Nam. Khung giờ nhận báo giá được lưu vào yêu cầu, email và nội dung Zalo dự phòng.
 
 Khi form dùng API, yêu cầu được lưu nối tiếp trong `data/quotes.jsonl` ở local hoặc Vercel Blob private khi triển khai. Không có API công khai đọc dữ liệu khách hàng. Chưa có trang quản trị, thanh toán hay tự xác nhận đơn hàng.
 
 Gửi email tự động đã được chuẩn bị, chỉ bật sau khi chủ shop chấp thuận dịch vụ và kích hoạt email nhận. Xem [hướng dẫn email](docs/email-setup.md). Khi chưa bật, form giữ luồng soạn nội dung và mở Zalo; link `?zalo-test=1#contact` dùng số kiểm thử riêng. Không xem thao tác mở Zalo là tin nhắn đã gửi.
 
-Form địa chỉ có gợi ý tỉnh/thành và phường/xã từ danh mục lưu trong dự án; quận/huyện cũ không bắt buộc. Tên đường có ví dụ nhập, không phải dữ liệu bản đồ đầy đủ. Chạy `node scripts/update-addresses.mjs` để cập nhật danh mục từ https://provinces.open-api.vn/.
+Form địa chỉ có gợi ý tỉnh/thành và phường/xã từ danh mục lưu trong dự án, không có ô quận/huyện. Bấm lại ô hoặc mũi tên để mở đầy đủ danh sách; nhập chữ để lọc, hỗ trợ phím mũi tên/Enter/Escape. Tên đường có ví dụ nhập, không phải dữ liệu bản đồ đầy đủ. Chạy `node scripts/update-addresses.mjs` để cập nhật danh mục từ https://provinces.open-api.vn/. Khi nộp thiếu thông tin, tất cả ô không hợp lệ có viền đỏ và thông báo tại chỗ. Form hiển thị thời hạn phản hồi chậm nhất sau 24 giờ.
 
 ## Triển khai Vercel
 

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createQuoteHandler } from '../api/quotes.js'
 import { today } from './quotes.js'
 
-const quote = () => ({ name: 'Khách kiểm thử', phone: '0912345678', flowerType: 'Hoa hướng dương', quantity: 10, date: today(), location: 'Hồ Thị Kỷ, TP.HCM', note: '' })
+const quote = () => ({ name: 'Khách kiểm thử', phone: '0912345678', flowerType: 'Hoa hướng dương', quantity: 10, date: today(), quoteTime: 'anytime', location: 'Hồ Thị Kỷ, TP.HCM', note: '' })
 function response() {
   return { headers: {}, setHeader(name, value) { this.headers[name] = value }, status(value) { this.statusCode = value; return this }, json(value) { this.body = value } }
 }

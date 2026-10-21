@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { createApp } from './index.js'
 import { today, validateQuote, flowerNames } from './quotes.js'
 
-const valid = () => ({ name: 'Nguyễn An', phone: '0912 345 678', flowerType: 'Hoa lay ơn hồng', quantity: '20', date: today(), location: 'Hồ Thị Kỷ, TP.HCM', note: 'Hoa màu hồng' })
+const valid = () => ({ name: 'Nguyễn An', phone: '0912 345 678', flowerType: 'Hoa lay ơn hồng', quantity: '20', date: today(), quoteTime: 'anytime', location: 'Hồ Thị Kỷ, TP.HCM', note: 'Hoa màu hồng' })
 
 test('validates quantity, phone, flower and delivery date', () => {
   assert.equal(validateQuote(valid()).phone, '0912345678')

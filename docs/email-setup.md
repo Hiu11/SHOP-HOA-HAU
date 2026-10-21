@@ -19,4 +19,8 @@ Tài liệu: https://formsubmit.co/documentation
 
 ## Địa chỉ
 
-Danh mục tỉnh/thành và phường/xã được lưu trong `public/address-data/vietnam-addresses.json` từ https://provinces.open-api.vn/api/v2/?depth=2. Quận/huyện từ API v1 được ghi rõ là địa chỉ cũ và không bắt buộc. Cập nhật bằng `node scripts/update-addresses.mjs`. Gợi ý đường là ví dụ, không phải bản đồ đầy đủ. Người dùng có thể nhập thủ công, kể cả khi tải danh mục thất bại. Dữ liệu nhập không gửi đến dịch vụ gợi ý bên ngoài.
+Danh mục tỉnh/thành và phường/xã được lưu trong `public/address-data/vietnam-addresses.json` từ https://provinces.open-api.vn/api/v2/?depth=2. Đã bỏ quận/huyện khỏi form và dữ liệu gợi ý. Cập nhật bằng `node scripts/update-addresses.mjs`. Gợi ý đường là ví dụ, không phải bản đồ đầy đủ. Người dùng có thể nhập thủ công, kể cả khi tải danh mục thất bại. Dữ liệu nhập không gửi đến dịch vụ gợi ý bên ngoài.
+
+## Thời gian nhận báo giá
+
+`quoteTime` bắt buộc: `now` (ngay bây giờ), `anytime` (bất cứ lúc nào), hoặc một trong 96 mốc `HH:MM` cách nhau 15 phút từ 00:00 đến 23:45, theo giờ Việt Nam. Thông tin này có trong email và Zalo dự phòng. Giao diện trước và sau khi gửi thông báo shop phản hồi chậm nhất sau 24 giờ.
