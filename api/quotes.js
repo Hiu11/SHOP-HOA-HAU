@@ -13,7 +13,7 @@ async function saveToBlob(quote) {
 }
 
 // Vercel parses JSON request bodies. Keep storage injectable for offline tests.
-export function createQuoteHandler({ saveQuote = saveToBlob, sendNotification = notifyQuote } = {}) {
+export function createQuoteHandler({ saveQuote = saveToBlob, sendNotification = quote => notifyQuote(quote, { browserDelivery: true }) } = {}) {
   return async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     const send = (status, data) => res.status(status).json(data)

@@ -13,6 +13,10 @@ Các bước triển khai:
 
 FormSubmit đã chấp nhận các tin thử sau kích hoạt. Dịch vụ trả HTTP 403 cho yêu cầu từ IP máy chủ Vercel; website dùng AJAX trực tiếp từ trình duyệt theo tài liệu FormSubmit. API lưu yêu cầu trước, sau đó chỉ trả dữ liệu chuyển tiếp cho chính người vừa gửi; trình duyệt chuyển đến FormSubmit và kiểm tra kết quả trước khi hiển thị đã chuyển thông báo. Nếu gửi không thành công, vẫn giữ mã đã lưu và đưa ra tùy chọn Zalo thủ công. Đường gửi từ máy chủ local vẫn có `Referer: https://shop-hoa-hau.vercel.app/`.
 
+Route `api/quotes.js` chọn rõ `browserDelivery: true`, không phụ thuộc biến hệ thống `VERCEL`. Cần kiểm tra domain chính trỏ đúng bản triển khai mới, không dùng lại deployment cũ từ dashboard. Link dùng cho khách: https://shop-hoa-hau.vercel.app/.
+
+`public/site-entry.js` chuyển các URL deployment mới dạng `shop-hoa-…-cine-sky-s-projects.vercel.app` sang domain chính trước khi form chạy, giữ nguyên đường dẫn và mục đang mở. Những deployment cũ không có script này vẫn là bản bất biến; không gửi các URL đó cho khách.
+
 Khi chưa bật, form tiếp tục soạn yêu cầu qua Zalo. Khi bật, form gửi API để lưu riêng trong Blob rồi chuyển thông báo sang dịch vụ email. Nếu thông báo lỗi, khách được báo rõ yêu cầu đã lưu nhưng email chưa chuyển được, có bản nội dung để gửi Zalo và thông tin nhập được giữ lại.
 
 Tài liệu: https://formsubmit.co/documentation

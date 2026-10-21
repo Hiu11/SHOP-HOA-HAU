@@ -56,6 +56,26 @@ test('email failure preserves the saved request and its reference for manual fol
   assert.equal(res.body.notification, 'failed')
 })
 
+test('Vercel API always uses browser email delivery even when VERCEL system variable is absent', async () => {
+  const previousProvider = process.env.QUOTE_EMAIL_PROVIDER
+  const previousVercel = process.env.VERCEL
+  process.env.QUOTE_EMAIL_PROVIDER = 'formsubmit'
+  delete process.env.VERCEL
+  try {
+    const handler = createQuoteHandler({ saveQuote: async () => {} })
+    const res = { setHeader() {}, status(value) { this.statusCode = value; return this }, json(value) { this.body = value } }
+    await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body: quote() }, res)
+    assert.equal(res.statusCode, 201)
+    assert.equal(res.body.notification, 'client_required')
+    assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+  } finally {
+    if (previousProvider === undefined) delete process.env.QUOTE_EMAIL_PROVIDER
+    else process.env.QUOTE_EMAIL_PROVIDER = previousProvider
+    if (previousVercel === undefined) delete process.env.VERCEL
+    else process.env.VERCEL = previousVercel
+  }
+})
+
 test('addresses include current wards and omit districts entirely', async () => {
   const data = JSON.parse(await readFile(new URL('../public/address-data/vietnam-addresses.json', import.meta.url), 'utf8'))
   assert.equal(data.provinces.length, 34)
