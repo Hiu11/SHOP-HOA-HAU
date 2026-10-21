@@ -15,7 +15,7 @@ test('email transport stays offline until explicitly enabled', async () => {
 test('email contains the complete saved request and uses the designated recipient', async () => {
   const item = quote()
   let calls = 0
-  const status = await notifyQuote(item, { enabled: true, request: async (url, options) => {
+  const status = await notifyQuote(item, { enabled: true, browserDelivery: false, request: async (url, options) => {
     calls++
     assert.equal(url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
     assert.equal(options.headers.Referer, 'https://shop-hoa-hau.vercel.app/')
@@ -29,8 +29,20 @@ test('email contains the complete saved request and uses the designated recipien
 
 test('provider failure never reports a delivered email', async () => {
   for (const result of [{ ok: false }, { ok: true, json: async () => ({ success: false }) }]) {
-    await assert.rejects(notifyQuote(quote(), { enabled: true, request: async () => result }))
+    await assert.rejects(notifyQuote(quote(), { enabled: true, browserDelivery: false, request: async () => result }))
   }
+})
+
+test('Vercel browser transport prepares only the saved request and never calls the blocked server transport', async () => {
+  assert.equal(await notifyQuote(quote(), { enabled: true, browserDelivery: true, request: () => { throw new Error('Must not contact provider from server') } }), 'client_required')
+  let saved
+  const handler = createQuoteHandler({ saveQuote: async item => { saved = item }, sendNotification: async () => 'client_required' })
+  const res = { setHeader() {}, status(value) { this.statusCode = value; return this }, json(value) { this.body = value } }
+  await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body: quote() }, res)
+  assert.equal(res.statusCode, 201)
+  assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+  assert.equal(res.body.emailDelivery.payload['Mã yêu cầu'], saved.id)
+  assert.equal(res.body.notification, 'client_required')
 })
 
 test('email failure preserves the saved request and its reference for manual follow-up', async () => {

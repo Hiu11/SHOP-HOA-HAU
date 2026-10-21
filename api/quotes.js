@@ -1,5 +1,5 @@
 import { validateQuote } from '../server/quotes.js'
-import { notifyQuote } from '../server/quote-email.js'
+import { notifyQuote, prepareQuoteEmail } from '../server/quote-email.js'
 
 async function saveToBlob(quote) {
   if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error('Quote storage not configured')
@@ -39,7 +39,7 @@ export function createQuoteHandler({ saveQuote = saveToBlob, sendNotification = 
         console.error('Quote email notification failed:', error.name, error.message)
         notification = 'failed'
       }
-      return send(201, { id: quote.id, createdAt: quote.createdAt, notification })
+      return send(201, { id: quote.id, createdAt: quote.createdAt, notification, ...(notification === 'client_required' ? { emailDelivery: prepareQuoteEmail(quote) } : {}) })
     } catch {
       return send(503, { error: 'Chưa lưu được yêu cầu. Vui lòng thử lại hoặc liên hệ Zalo 0798971155.' })
     }

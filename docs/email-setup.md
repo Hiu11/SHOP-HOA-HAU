@@ -11,7 +11,7 @@ Các bước triển khai:
 3. Đặt `QUOTE_EMAIL_PROVIDER=formsubmit` trong môi trường Vercel và triển khai lại.
 4. Gửi một yêu cầu kiểm thử, kiểm tra mã đã lưu và xác nhận người dùng nhận được thư trong Gmail. API chỉ xác nhận dịch vụ đã nhận thông báo, không xác minh thư đã vào hộp thư.
 
-Lệnh gửi từ máy chủ phải có header `Referer: https://shop-hoa-hau.vercel.app/`; FormSubmit từ chối yêu cầu thiếu địa chỉ trang. Đã bổ sung header này và kiểm tra bằng yêu cầu kích hoạt thực tế.
+FormSubmit đã chấp nhận các tin thử sau kích hoạt. Dịch vụ trả HTTP 403 cho yêu cầu từ IP máy chủ Vercel; website dùng AJAX trực tiếp từ trình duyệt theo tài liệu FormSubmit. API lưu yêu cầu trước, sau đó chỉ trả dữ liệu chuyển tiếp cho chính người vừa gửi; trình duyệt chuyển đến FormSubmit và kiểm tra kết quả trước khi hiển thị đã chuyển thông báo. Nếu gửi không thành công, vẫn giữ mã đã lưu và đưa ra tùy chọn Zalo thủ công. Đường gửi từ máy chủ local vẫn có `Referer: https://shop-hoa-hau.vercel.app/`.
 
 Khi chưa bật, form tiếp tục soạn yêu cầu qua Zalo. Khi bật, form gửi API để lưu riêng trong Blob rồi chuyển thông báo sang dịch vụ email. Nếu thông báo lỗi, khách được báo rõ yêu cầu đã lưu nhưng email chưa chuyển được, có bản nội dung để gửi Zalo và thông tin nhập được giữ lại.
 

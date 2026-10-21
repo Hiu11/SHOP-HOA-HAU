@@ -496,6 +496,17 @@ form.addEventListener('submit', async (event) => {
       const response = await fetch('/api/quotes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, phone }), signal: AbortSignal.timeout(35000) })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'Chưa gửi được yêu cầu.')
+      if (result.notification === 'client_required' && result.emailDelivery) {
+        // Official cross-origin AJAX transport; request data has already been saved.
+        try {
+          const delivery = await fetch(result.emailDelivery.url, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(result.emailDelivery.payload), signal: AbortSignal.timeout(20000)
+          })
+          const receipt = await delivery.json()
+          result.notification = delivery.ok && (receipt.success === true || receipt.success === 'true') ? 'accepted' : 'failed'
+        } catch { result.notification = 'failed' }
+      }
       if (result.notification === 'accepted') {
         message.textContent = `Đã lưu yêu cầu ${result.id} và chuyển thông báo đến dịch vụ email của shop. Shop sẽ liên hệ để xác nhận.`
       } else {
