@@ -43,7 +43,7 @@ test('email failure preserves the saved request and its reference for manual fol
 })
 
 test('address suggestions include current wards and clearly separate legacy districts', async () => {
-  const data = JSON.parse(await readFile(new URL('../public/data/vietnam-addresses.json', import.meta.url), 'utf8'))
+  const data = JSON.parse(await readFile(new URL('../public/address-data/vietnam-addresses.json', import.meta.url), 'utf8'))
   assert.equal(data.provinces.length, 34)
   const hcm = data.provinces.find(p => p.name === 'Thành phố Hồ Chí Minh')
   assert.ok(hcm.wards.includes('Phường Vườn Lài'))

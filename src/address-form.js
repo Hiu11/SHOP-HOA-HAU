@@ -24,7 +24,7 @@ export function initAddressForm(form) {
   province.addEventListener('input', () => { ward.value = ''; updateWards() })
   province.addEventListener('change', updateWards)
   options('streetSuggestions', streetExamples)
-  fetch('/data/vietnam-addresses.json').then(response => {
+  fetch('/address-data/vietnam-addresses.json').then(response => {
     if (!response.ok) throw new Error('Address list unavailable')
     return response.json()
   }).then(data => {

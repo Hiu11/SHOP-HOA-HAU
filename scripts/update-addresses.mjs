@@ -13,6 +13,6 @@ const data = {
   legacyDistricts: legacy.flatMap(p => p.districts.map(d => `${d.name}, ${p.name}`))
 }
 if (data.provinces.length < 30 || data.legacyDistricts.length < 500) throw new Error('Incomplete address data')
-await mkdir(new URL('../public/data/', import.meta.url), { recursive: true })
-await writeFile(new URL('../public/data/vietnam-addresses.json', import.meta.url), JSON.stringify(data))
+await mkdir(new URL('../public/address-data/', import.meta.url), { recursive: true })
+await writeFile(new URL('../public/address-data/vietnam-addresses.json', import.meta.url), JSON.stringify(data))
 console.log(`${data.provinces.length} provinces, ${data.provinces.reduce((n, p) => n + p.wards.length, 0)} wards; legacy districts labeled separately.`)

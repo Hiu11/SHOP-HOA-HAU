@@ -17,4 +17,4 @@ Tài liệu: https://formsubmit.co/documentation
 
 ## Địa chỉ
 
-Danh mục tỉnh/thành và phường/xã được lưu trong `public/data/vietnam-addresses.json` từ https://provinces.open-api.vn/api/v2/?depth=2. Quận/huyện từ API v1 được ghi rõ là địa chỉ cũ và không bắt buộc. Cập nhật bằng `node scripts/update-addresses.mjs`. Gợi ý đường là ví dụ, không phải bản đồ đầy đủ. Người dùng có thể nhập thủ công, kể cả khi tải danh mục thất bại. Dữ liệu nhập không gửi đến dịch vụ gợi ý bên ngoài.
+Danh mục tỉnh/thành và phường/xã được lưu trong `public/address-data/vietnam-addresses.json` từ https://provinces.open-api.vn/api/v2/?depth=2. Quận/huyện từ API v1 được ghi rõ là địa chỉ cũ và không bắt buộc. Cập nhật bằng `node scripts/update-addresses.mjs`. Gợi ý đường là ví dụ, không phải bản đồ đầy đủ. Người dùng có thể nhập thủ công, kể cả khi tải danh mục thất bại. Dữ liệu nhập không gửi đến dịch vụ gợi ý bên ngoài.
