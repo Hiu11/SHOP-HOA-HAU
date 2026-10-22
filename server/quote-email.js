@@ -1,6 +1,6 @@
 import { quoteTimeLabel } from '../shared/quote-time.js'
 
-export const quoteRecipient = 'tronghieudo2k4@gmail.com'
+export const quoteRecipient = 'dntanh16w@gmail.com'
 
 // Enable only after the owner approves FormSubmit and activates the recipient.
 export function emailEnabled() {

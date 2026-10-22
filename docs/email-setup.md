@@ -1,6 +1,6 @@
 # Nhận yêu cầu báo giá qua email
 
-Email nhận dự kiến: `tronghieudo2k4@gmail.com`.
+Email nhận thông báo hiện tại: `dntanh16w@gmail.com`.
 
 Chủ shop đã chấp thuận dùng FormSubmit và xác nhận đã bấm kích hoạt email trong cuộc trò chuyện. Biến `QUOTE_EMAIL_PROVIDER=formsubmit` được bật cho production. Kiểm tra phản hồi dịch vụ và email kiểm thử sau mỗi lần cấu hình lại; không coi phản hồi chấp nhận là bằng chứng thư đã tới hộp thư.
 

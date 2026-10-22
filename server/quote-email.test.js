@@ -17,7 +17,7 @@ test('email contains the complete saved request and uses the designated recipien
   let calls = 0
   const status = await notifyQuote(item, { enabled: true, browserDelivery: false, request: async (url, options) => {
     calls++
-    assert.equal(url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+    assert.equal(url, 'https://formsubmit.co/ajax/dntanh16w@gmail.com')
     assert.equal(options.headers.Referer, 'https://shop-hoa-hau.vercel.app/')
     const body = JSON.parse(options.body)
     assert.equal(body['Thời gian nhận báo giá'], '08:15 (giờ Việt Nam)')
@@ -41,7 +41,7 @@ test('Vercel browser transport prepares only the saved request and never calls t
   const res = { setHeader() {}, status(value) { this.statusCode = value; return this }, json(value) { this.body = value } }
   await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body: quote() }, res)
   assert.equal(res.statusCode, 201)
-  assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+  assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/dntanh16w@gmail.com')
   assert.equal(res.body.emailDelivery.payload['Mã yêu cầu'], saved.id)
   assert.equal(res.body.notification, 'client_required')
 })
@@ -67,7 +67,7 @@ test('Vercel API always uses browser email delivery even when VERCEL system vari
     await handler({ method: 'POST', headers: { 'content-type': 'application/json' }, body: quote() }, res)
     assert.equal(res.statusCode, 201)
     assert.equal(res.body.notification, 'client_required')
-    assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/tronghieudo2k4@gmail.com')
+    assert.equal(res.body.emailDelivery.url, 'https://formsubmit.co/ajax/dntanh16w@gmail.com')
   } finally {
     if (previousProvider === undefined) delete process.env.QUOTE_EMAIL_PROVIDER
     else process.env.QUOTE_EMAIL_PROVIDER = previousProvider
